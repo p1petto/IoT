@@ -1,5 +1,7 @@
 #include <PubSubClient.h>
 
+int led_pin = 13;
+
 PubSubClient mqtt_cli(wifiClient);
 
 void callback(char *topic, byte *payload, unsigned int length) {
@@ -11,12 +13,23 @@ void callback(char *topic, byte *payload, unsigned int length) {
     }
     Serial.println();
     Serial.println("-----------------------");
+    if ((char) payload[0] == 'u'){
+      digitalWrite(LED_BUILTIN, HIGH);
+      Serial.println("led on");
+    }
+    if ((char) payload[0] == 'd'){
+      digitalWrite(LED_BUILTIN, LOW);
+      Serial.println("led off");
+    }
 }
 
 void MQTT_init(){
   mqtt_cli.setServer(mqtt_broker, mqtt_port);
   mqtt_cli.setCallback(callback);
-  while (!mqtt_cli.connected()) {
+
+}
+void MQTT_connect(){
+    while (!mqtt_cli.connected()) {
       String client_id = "esp8266-" + String(WiFi.macAddress());
       Serial.print("The client " + client_id);
       Serial.println(" connects to the public mqtt broker\n");

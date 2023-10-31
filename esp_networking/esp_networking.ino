@@ -9,10 +9,9 @@ void setup(void){
   Serial.begin(115200);
   WIFI_init(true);
   server_init();
+  MQTT_init();
   pinMode(led, OUTPUT);
   mqtt_cli.publish("esp8266/state", "hello emqx");
-  mqtt_cli.subscribe("esp8266-fc6f10/command");
-
 }
 
 void loop(void){
@@ -25,7 +24,8 @@ void loop(void){
     server_init();
     previousMillis = currentMillis;
   }
-  if (WiFi.status() = WL_CONNECTED){
-    
+  if (WiFi.status() == WL_CONNECTED){
+    MQTT_connect();
+    mqtt_cli.subscribe("esp8266-fc6f10/command");
   }
 }

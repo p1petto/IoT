@@ -21,14 +21,14 @@ for _ in range(10):
         duration = 20
     # лампочка загорается на 20 секунде
     time.sleep(start_second)
-    state = "on"
+    state = "u"
     print(f"state is {state}")
     client.publish("esp8266-fc6f10/command", state)
     time.sleep(duration)
     duration -= 1
 
     #по истечении времени погасает
-    state = "off"
+    state = "d"
     print(f"state is {state}")
     client.publish("esp8266-fc6f10/command", state)
     #Времени до конца минуты
